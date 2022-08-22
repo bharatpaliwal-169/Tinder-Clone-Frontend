@@ -16,13 +16,13 @@ const Landing = () => {
           </Typography>
 
           <Typography variant='h1' >
-            <Button variant='contained' color='secondary' className={classes.accBtn} >
+            <Button variant='contained' color='secondary' className={classes.accBtn} component={Link} to="/auth" >
               Create account
             </Button>
           </Typography>
 
           <Typography variant='h5' className={classes.mute}>
-            Already have an account?  <Link to="/" 
+            Already have an account?  <Link to="/login" 
             style={{color: '#f9f9f9'}}>Login</Link>
           </Typography>
       </Box>
@@ -30,4 +30,4 @@ const Landing = () => {
   )
 }
 
-export default Landing
+export default Landing;

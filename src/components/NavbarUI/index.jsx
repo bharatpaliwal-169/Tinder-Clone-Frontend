@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import {AppBar,Toolbar,CssBaseline,Typography,Box,useMediaQuery,useTheme} from '@material-ui/core'
 import useStyles from './styles'
 import DrawerComponent from './Drawer'
-import Logo from '../../assets/images/color-logo-tinder.png'
+// import Logo from '../../assets/images/color-logo-tinder.png'
 const NavbarUI = () =>{
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));

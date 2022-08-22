@@ -1,28 +1,31 @@
 import React,{ useState} from 'react'
 import {Stepper,Step,StepLabel,Paper,Typography,Button,
   Card,CardContent,TextField,Radio,RadioGroup,FormControlLabel,
-  InputAdornment, IconButton,useMediaQuery,useTheme} from '@material-ui/core'
-import {Visibility,VisibilityOff} from "@material-ui/icons/";
+  Checkbox,InputAdornment, IconButton,useMediaQuery,useTheme} from '@material-ui/core'
+import {Visibility,VisibilityOff} from "@material-ui/icons";
 import useStyles from './styles'
 import Done from './onDone'
 const Auth = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  // const theme = useTheme();
+  // const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStyles();
   const initalState = {
     fullName : '', email : '' , password : '' , dob : 0 , gender : '' ,
     isVerified : false
-  }
-
+  };
 
   const [formData,setFormData] = useState(initalState);
   const [activeStep, setActiveStep] = useState(0);
+  const [checked , setChecked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
   const steps = getSteps();
+
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setFlag(true);
+    // if(activeStep === steps.length -1)handleSubmit();
   };
 
   const handleBack = () => {
@@ -50,17 +53,13 @@ const Auth = () => {
                 <Typography variant="h4" className={classes.cardHeadText}>
                   Hi, What's your name?
                 </Typography>
-                <TextField
-                  name = "fullName"
-                  label = "name"
-                  type = "text"
-                  required
-                  onChange = {handleChange}
-                  fullWidth
-                  variant="outlined"
-                  placeholder='Eg: Jhon Doe'
+                <TextField name = "fullName" label = "name" type = "text" fullWidth
+                  onChange = {handleChange} variant="outlined" placeholder='Eg: Jhon Doe'
                 >
                 </TextField>
+                <Typography variant='caption'>
+                  Please use only alphabets and numbers.
+                </Typography>
               </CardContent>
             </Card>
           </>
@@ -73,15 +72,9 @@ const Auth = () => {
                 <Typography variant="h4" className={classes.cardHeadText}>
                   Email address
                 </Typography>
-                <TextField
-                  name = "email"
-                  label = "Email address"
-                  type = "email"
-                  required
-                  onChange = {handleChange}
-                  fullWidth
-                  variant="filled"
-                  placeholder='Eg: jhonDoe@something.com'
+                <TextField name = "email" label = "Email address" type = "email"
+                  onChange = {handleChange} fullWidth
+                  variant="filled" placeholder='Eg: jhonDoe@something.com'
                 >
                 </TextField>
                 <Typography variant='caption'>
@@ -99,18 +92,11 @@ const Auth = () => {
                 <Typography variant="h4" className={classes.cardHeadText}>
                   When is your birthday?
                 </Typography>
-                <TextField
-                  name = "dob"
-                  label = "Birthday"
-                  type = "date"
-                  required
-                  onChange = {handleChange}
-                  fullWidth
+                <TextField name = "dob" label = "Birthday" type = "date" onChange = {handleChange} fullWidth variant="outlined" placeholder='01/01/2000'
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  variant="outlined"
-                  placeholder='01/01/2000'
+
                 >
                 </TextField>
                 <Typography variant='caption' style={{marginTop : '1rem'}}>
@@ -145,13 +131,8 @@ const Auth = () => {
                 <Typography variant="h4" className={classes.cardHeadText}>
                   Make a secure Password
                 </Typography>
-                <TextField
-                  name = "password"
-                  label='password'
-                  variant="outlined"
-                  type={showPassword ? "text" : "password"} 
-                  onChange={handleChange}
-                  fullWidth
+                <TextField name = "password" label='password' variant="outlined" type={showPassword ? "text" : "password"} 
+                  onChange={handleChange} fullWidth
                   InputProps={{ // <-- This is where the toggle button is added.
                     endAdornment: (
                       <InputAdornment position="end">
@@ -178,11 +159,29 @@ const Auth = () => {
           <>
             <Card elevation={0} className={classes.authCard}>
               <CardContent>
-                <Typography variant="h5" className={classes.cardHeadText}>
-                  Finish making your account
+                <Typography variant="h4" className={classes.cardHeadText}>
+                  Finish building your account
                 </Typography>
-                <Typography variant='caption' style={{marginTop : '1rem'}}>
-                  It helps to keep your personal data safe.
+                <Typography variant="h5" style={{fontWeight : '600'}}>
+                  Please Check your details:
+                </Typography>
+                <Typography variant='body1' style={{marginTop : '0.5rem'}}>
+                  <span style={{fontWeight : '600'}}> Name : </span>  {formData.fullName}, <br />
+                  <span style={{fontWeight : '600'}}> Email : </span> {formData.email}, <br />
+                  <span style={{fontWeight : '600'}}> Date of Birth : </span>  {formData.dob}, <br />
+                  <span style={{fontWeight : '600'}}> Gender : </span> {formData.gender}, <br />
+                </Typography>
+                <Typography variant='body1' style={{marginTop : '0.5rem'}}>
+                  You can go back, change it if you feel ...
+                </Typography>
+
+                <Typography variant='body2'>
+                  Yes, I verify the details provided
+                  <Checkbox  
+                    checked={checked}
+                    onChange={handleCheck}
+                    color = 'secondary'
+                  />
                 </Typography>
               </CardContent>
             </Card>
@@ -192,14 +191,23 @@ const Auth = () => {
         return 'Done!'
     }
   }
-
+  const [flag,setFlag] = useState(true);
   const handleChange = (e) => {
+    if(e.target.value === ''|| e.target.value === null) setFlag(true);
+    else if(e.target.value) setFlag(false);
+    if(checked){
+      setFlag(false)
+    }
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
-  const handleSubmit = () => {
-    console.log(formData);
+  const handleCheck = (e) =>{
+    setFlag(false);
+    setChecked(e.target.checked)
   }
+  // const handleSubmit = () => {
+  //   console.log(formData);
+  // }
 
   return (
     <React.Fragment>
@@ -216,7 +224,7 @@ const Auth = () => {
         <Card elevation={5}>
           <CardContent>
             {activeStep === steps.length ? (
-              <Done />
+              <Done formData = {formData} />
             ) : (
               <div>
                 <Typography className={classes.instructions}>
@@ -224,9 +232,10 @@ const Auth = () => {
                 </Typography>
 
                 <div>
-                  <Button variant="contained" color="secondary" onClick={handleNext} fullWidth>
+                  <Button variant="contained" color="secondary" 
+                    onClick={handleNext} fullWidth disabled={flag} 
+                  >
                     {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                    {activeStep === steps.length -1 ? handleSubmit() : null}
                   </Button>
                   <Button
                     disabled={activeStep === 0}

@@ -1,15 +1,22 @@
 import React from 'react'
-import {Typography} from '@material-ui/core'
+import {Card,CardContent,Typography} from '@material-ui/core'
 import useStyles from './styles'
-const onDone = () =>{
+import ok from '../../assets/svg/ok.svg'
+const onDone = ({formData}) =>{
   const classes = useStyles();
+  console.log(formData);
   return (
     <>
-      <Typography variant="h3" className={classes.instructions}
-        style={{marginTop: '2rem',marginBottom: '2rem'}}
-      >
-        Yay!! , you are all set.
-      </Typography>
+      <Card elevation={0} className={classes.authCard} style={{marginLeft: '1rem'}}>
+        <CardContent>
+          <img src={ok} alt="ok" style={{marginLeft: '0.5rem'}} />
+          <Typography variant="h4" className={classes.instructions}
+            style={{marginTop: '1rem',marginBottom: '1rem'}}
+          >
+            Yay!! , you are all set.
+          </Typography>
+        </CardContent>
+      </Card>
     </>
   )
 }

@@ -9,6 +9,9 @@ export default makeStyles((theme) => ({
     alignItems : 'center',
     paddingBottom : '3rem',
     paddingTop : '3rem',
+    [theme.breakpoints.down('sm')]: {
+      marginLeft : '1.5rem',
+    },
   },
   backButton: {
     marginTop: theme.spacing(1),
